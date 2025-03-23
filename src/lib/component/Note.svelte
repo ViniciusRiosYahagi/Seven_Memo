@@ -1,24 +1,28 @@
 <script lang="ts">
+  let { text } = $props();
+  
+  let altura = $state();
 
-  let { text } = $props()
-
-  function saveText() {
-    localStorage.setItem('text', JSON.stringify(text))
+  function autoResize(event: Event) {
+    const textarea = event.target as HTMLTextAreaElement;
+    altura = textarea.scrollHeight;
+    console.log(altura)
+    if (text.length === 0) {
+      altura = 400
+    }
   }
 
-  function handleText(event: Event): void {
-    let value = event.target as HTMLElement
-    text = value.innerHTML || ''
-    saveText()
-  }
-
+  // function autoResizeble() {
+  //   altura = text.length 
+  //   console.log(altura)
+  // }
 </script>
-<input type="text">
 
 <section class="flex flex-col shadow-lg bg-[#E5E5E5] p-3">
   <textarea
-    class="outline-0 h-full min-h-96 w-6xl break-words text-[#636363] text-2xl"
-    contenteditable="true" 
+    class="outline-0 min-h-[400px] w-5xl break-words text-[#636363] text-2xl"
+    style="height: {altura}px;"
+    oninput={autoResize}
     bind:value={text}
-    ></textarea>
+  ></textarea>
 </section>
